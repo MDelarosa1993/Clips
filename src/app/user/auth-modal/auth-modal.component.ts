@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-
+import { ModalComponent } from '../../shared/modal/modal.component';
 @Component({
   selector: 'app-auth-modal',
-  imports: [],
+  standalone: true,
+  imports: [ModalComponent],
   templateUrl: './auth-modal.component.html',
   styleUrl: './auth-modal.component.css'
 })
