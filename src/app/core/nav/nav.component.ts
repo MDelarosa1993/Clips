@@ -4,7 +4,7 @@ import { ModalService } from '../../services/modal.service';
   selector: 'app-nav',
   imports: [],
   templateUrl: './nav.component.html',
-  styleUrl: './nav.component.css'
+  styleUrl: './nav.component.css',
 })
 export class NavComponent {
   modal = inject(ModalService);

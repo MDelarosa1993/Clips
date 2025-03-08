@@ -1,4 +1,11 @@
-import { Component, inject, input, viewChild, AfterViewInit, ElementRef } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  viewChild,
+  AfterViewInit,
+  ElementRef,
+} from '@angular/core';
 import { ModalService } from '../../services/modal.service';
 
 @Component({
@@ -14,6 +21,6 @@ export class ModalComponent implements AfterViewInit {
   dialog = viewChild.required<ElementRef<HTMLDialogElement>>('baseDialog');
 
   ngAfterViewInit() {
-    this.modal.register(this.id(), this.dialog().nativeElement)
+    this.modal.register(this.id(), this.dialog().nativeElement);
   }
 }

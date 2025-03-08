@@ -19,14 +19,14 @@ export class ModalService {
   }
 
   toggle(id: string) {
-    const modal = this.modals().find((item) => item.id === id)
-    if(!modal) {
-      return 
+    const modal = this.modals().find((item) => item.id === id);
+    if (!modal) {
+      return;
     }
-    if(modal.element.open) {
-      modal.element.close()
+    if (modal.element.open) {
+      modal.element.close();
     } else {
-      modal.element.showModal()
+      modal.element.showModal();
     }
   }
 }
