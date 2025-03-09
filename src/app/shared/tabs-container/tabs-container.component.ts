@@ -1,4 +1,4 @@
-import { Component, contentChildren, AfterContentInit, } from '@angular/core';
+import { Component, contentChildren, AfterContentInit } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { TabComponent } from '../tab/tab.component';
 
@@ -19,7 +19,8 @@ export class TabsContainerComponent implements AfterContentInit {
     }
   }
 
-  selectTab(tab: TabComponent) {
+  selectTab(tab: TabComponent, event: Event) {
+    event.preventDefault()
     this.tabs().forEach((tab) => tab.active.set(false));
     tab.active.set(true);
   }
