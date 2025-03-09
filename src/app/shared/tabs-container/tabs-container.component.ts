@@ -19,9 +19,9 @@ export class TabsContainerComponent implements AfterContentInit {
     }
   }
 
-  selectTab(tab: TabComponent, event: Event) {
-    event.preventDefault()
+  selectTab(tab: TabComponent) {
     this.tabs().forEach((tab) => tab.active.set(false));
     tab.active.set(true);
+    return false;
   }
 }
