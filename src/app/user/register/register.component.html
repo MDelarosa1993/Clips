@@ -10,6 +10,17 @@
       formControlName="name"
       minlength="3"
     />
+    @if(form.controls.name.touched && form.controls.name.dirty
+    &&form.controls.name.hasError('required')) {
+    <p class="text-red-400">Field is required.</p>
+    } @if(form.controls.name.hasError('minlength')) {
+    <p class="text-red-400">
+      The value you inputted is
+      {{ form.controls.name.getError("minlength").actualLength }} characters
+      long. It must be at least
+      {{ form.controls.name.getError("minlength").requiredLength }}
+    </p>
+    }
   </div>
   <!-- Email -->
   <div class="mb-3">
