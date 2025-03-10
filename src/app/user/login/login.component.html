@@ -1,6 +1,5 @@
 <!-- Login Form -->
-<form #loginForm="ngForm">
-  <!-- Email -->
+<form #loginForm="ngForm" (ngSubmit)="login()">
   <div class="mb-3">
     <label class="inline-block mb-2">Email</label>
     <input
@@ -18,7 +17,6 @@
     }
     
   </div>
-  <!-- Password -->
   <div class="mb-3">
     <label class="inline-block mb-2">Password</label>
     <input
@@ -27,11 +25,17 @@
       placeholder="Password"
       name="password"
       [(ngModel)]="credentials.password"
+      required
+      #password="ngModel"
     />
+    @if(password.errors && password.touched && password.dirty) {
+      <p class="text-red-400">Password is invalid.</p>
+    }
   </div>
   <button
     type="submit"
     class="block w-full bg-indigo-400 text-white py-1.5 px-3 rounded transition hover:bg-indigo-500 disabled:opacity-50 disabled:bg-indigo-400"
+    [disabled]="loginForm.invalid"
   >
     Submit
   </button>
