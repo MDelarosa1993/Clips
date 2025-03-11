@@ -1,5 +1,6 @@
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore  } from '@angular/fire/firestore';
 
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -19,6 +20,7 @@ export const appConfig: ApplicationConfig = {
         appId: '1:809274114827:web:9354ca49b04941ccf8d80e',
       })
     ),
-    provideAuth(() => getAuth()) 
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()) 
   ],
 };
