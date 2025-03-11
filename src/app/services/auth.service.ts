@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, updateProfile, authState } from '@angular/fire/auth';
 import { Firestore, collection, addDoc, doc, setDoc } from '@angular/fire/firestore';
 import { UserData } from '../interfaces/iuserdata';
 
@@ -10,7 +10,7 @@ import { UserData } from '../interfaces/iuserdata';
 export class AuthService {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
-  constructor() {}
+  authState$ = authState(this.auth);
 
   async creatUser(userData: UserData) {
     const userCred = await createUserWithEmailAndPassword(
