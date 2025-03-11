@@ -3,7 +3,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputComponent } from '../../shared/input/input.component';
 import { AlertComponent } from '../../shared/alert/alert.component';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-register',
   imports: [ReactiveFormsModule, CommonModule, InputComponent, AlertComponent],
@@ -12,8 +12,7 @@ import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 })
 export class RegisterComponent {
   fb = inject(FormBuilder);
-  private auth = inject(Auth);
-  inSubmission = signal(false);
+  auth = inject(AuthService);
 
   form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -38,20 +37,14 @@ export class RegisterComponent {
   showAlert = signal(false);
   alertMsg = signal('Please wait! Your account is being created.');
   alertColor = signal('blue');
-
+  inSubmission = signal(false);
   async register() {
     this.showAlert.set(true);
     this.alertMsg.set('Please wait! Your account is being created.');
     this.alertColor.set('blue');
     this.inSubmission.set(true);
-    const { email, password } = this.form.getRawValue();
     try {
-      const userCred = await createUserWithEmailAndPassword(
-        this.auth,
-        email,
-        password
-      );
-      console.log(userCred);
+      await this.auth.creatUser(this.form.getRawValue())
     } catch (error) {
       console.log(error);
       this.alertMsg.set('An unexpected error occured! Please try again later!');
