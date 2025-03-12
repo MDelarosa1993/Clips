@@ -4,6 +4,7 @@ import { NavComponent } from './core/nav/nav.component';
 import { AuthModalComponent } from './user/auth-modal/auth-modal.component';
 import { AuthService } from './services/auth.service';
 import { AsyncPipe } from '@angular/common';
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, NavComponent, AuthModalComponent, AsyncPipe],
