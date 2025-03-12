@@ -29,6 +29,9 @@
 </p>
 }
 @if(control().hasError('noMatch')) {
-  <p class="text-red-400">Password do not match</p>
+  <p class="text-red-400">Passwords do not match</p>
+}
+@if(control().hasError('emailTaken')) {
+  <p class="text-red-400">Email taken. Please try another email.</p>
 }
 }
