@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, updateProfile, authState } from '@angular/fire/auth';
 import { Firestore, collection, addDoc, doc, setDoc } from '@angular/fire/firestore';
 import { UserData } from '../interfaces/iuserdata';
-
+import { delay } from 'rxjs'
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,9 @@ export class AuthService {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
   authState$ = authState(this.auth);
-
+  authStateWithDelay$ = this.authState$.pipe(
+    delay(1000)
+  );
   async creatUser(userData: UserData) {
     const userCred = await createUserWithEmailAndPassword(
       this.auth,
