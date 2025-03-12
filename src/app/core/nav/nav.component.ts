@@ -3,9 +3,10 @@ import { ModalService } from '../../services/modal.service';
 import { AuthService } from '../../services/auth.service';
 import { AsyncPipe } from '@angular/common';
 import { Auth, signOut } from '@angular/fire/auth';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-nav',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, RouterLink],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css',
 })
