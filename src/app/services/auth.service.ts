@@ -1,8 +1,20 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, updateProfile, authState, signOut } from '@angular/fire/auth';
-import { Firestore, collection, addDoc, doc, setDoc } from '@angular/fire/firestore';
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  authState,
+  signOut,
+} from '@angular/fire/auth';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+} from '@angular/fire/firestore';
 import { UserData } from '../interfaces/iuserdata';
-import { delay, filter } from 'rxjs'
+import { delay, filter, map, switchMap } from 'rxjs';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 @Injectable({
   providedIn: 'root',
@@ -14,11 +26,23 @@ export class AuthService {
   authStateWithDelay$ = this.authState$.pipe(delay(1000));
   router = inject(Router);
   route = inject(ActivatedRoute);
-
+  redirect = false;
   constructor() {
-    this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd)
-    ).subscribe(console.log);
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map((event) => {
+          let currentRoute = this.route;
+          while (currentRoute.firstChild) {
+            currentRoute = currentRoute.firstChild;
+          }
+          return currentRoute;
+        }),
+        switchMap((route) => route.data)
+      )
+      .subscribe((data) => {
+        this.redirect = data['authOnly'] ?? false;
+      });
   }
 
   async creatUser(userData: UserData) {
@@ -42,7 +66,8 @@ export class AuthService {
   async logout($event?: Event) {
     $event?.preventDefault();
     await signOut(this.auth);
-
-    await this.router.navigateByUrl('/');
+    if (this.redirect) {
+      await this.router.navigateByUrl('/');
+    }
   }
 }
