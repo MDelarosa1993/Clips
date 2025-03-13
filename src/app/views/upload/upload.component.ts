@@ -9,8 +9,11 @@ import { NgClass } from '@angular/common';
 })
 export class UploadComponent {
   isDragover = signal(false);
-
+  file = signal<File | null>(null);
   storeFile($event: Event) {
     this.isDragover.set(false);
+    this.file.set(($event as DragEvent).dataTransfer?.files.item(0) ?? null);
+    console.log(this.file())
   }
+  
 }
