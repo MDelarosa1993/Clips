@@ -20,7 +20,7 @@ import { AlertComponent } from '../../shared/alert/alert.component';
     ReactiveFormsModule,
     InputComponent,
     AlertComponent,
-    PercentPipe
+    PercentPipe,
   ],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css',
@@ -36,6 +36,7 @@ export class UploadComponent {
   alertColor = signal('blue');
   inSubmission = signal(false);
   percantage = signal(0);
+  showPercantage = signal(false);
 
   form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
@@ -57,15 +58,31 @@ export class UploadComponent {
     this.alertColor.set('blue');
     this.alertMsg.set('Please wait! Your Clip is being uploaded.');
     this.inSubmission.set(true);
+    this.showPercantage.set(true);
 
     const clipFileName = uuid();
     const clipPath = `clips/${clipFileName}.mp4`;
     const clipRef = ref(this.storage, clipPath);
 
     const clipTask = uploadBytesResumable(clipRef, this.file() as File);
-    fromTask(clipTask).subscribe((snapshot) => {
-      const progress = snapshot.bytesTransferred / snapshot.totalBytes;
-      this.percantage.set(progress);
+    fromTask(clipTask).subscribe({
+      next: (snapshot) => {
+        const progress = snapshot.bytesTransferred / snapshot.totalBytes;
+        this.percantage.set(progress);
+      },
+      error: (error) => {
+        this.alertColor.set('red');
+        this.alertMsg.set('Upload failed! Please try again later.');
+        this.inSubmission.set(false);
+        this.showPercantage.set(false);
+
+        console.error(error);
+      },
+      complete: () => {
+        this.alertColor.set('green')
+        this.alertMsg.set("Success! Your clip is now ready to share with the world.")
+        this.showPercantage.set(false);
+      },
     });
   }
 }
