@@ -13,6 +13,7 @@ import {
 import { v4 as uuid } from 'uuid';
 import { AlertComponent } from '../../shared/alert/alert.component';
 import { Auth } from '@angular/fire/auth';
+import { ClipService } from '../../services/clip.service';
 
 @Component({
   selector: 'app-upload',
@@ -39,7 +40,8 @@ export class UploadComponent {
   inSubmission = signal(false);
   percantage = signal(0);
   showPercantage = signal(false);
-  private auth = inject(Auth);
+  #auth = inject(Auth);
+  #clipService = inject(ClipService);
 
   form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
@@ -84,13 +86,14 @@ export class UploadComponent {
       complete: async () => {
         const clipURL = await getDownloadURL(clipRef)
         const clip = {
-          uid: this.auth.currentUser?.uid as string,
-          displayName: this.auth.currentUser?.displayName as string,
+          uid: this.#auth.currentUser?.uid as string,
+          displayName: this.#auth.currentUser?.displayName as string,
           title: this.form.controls.title.value,
           fileName: `${clipFileName}.mp4`,
           clipURL,
-        }
-        console.log(clip)
+        };
+        this.#clipService.createClip(clip)
+
         this.alertColor.set('green')
         this.alertMsg.set("Success! Your clip is now ready to share with the world.")
         this.showPercantage.set(false);
