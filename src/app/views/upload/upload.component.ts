@@ -3,7 +3,8 @@ import { EventBlockerDirective } from '../../shared/directives/event-blocker.dir
 import { NgClass } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { InputComponent } from '../../shared/input/input.component';
-import { Storage } from '@angular/fire/storage';
+import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage';
+import { v4 as uuid } from 'uuid'
 
 @Component({
   selector: 'app-upload',
@@ -16,7 +17,7 @@ export class UploadComponent {
   file = signal<File | null>(null);
   nextStep = signal(false);
   fb = inject(FormBuilder);
-  private hasStorage = inject(Storage);
+  private storage = inject(Storage);
 
   form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
@@ -34,7 +35,9 @@ export class UploadComponent {
   }
 
   uploadFile() {
-    const clipPath = `clips/${this.file()?.name}`
-    
+    const clipFileName = uuid()
+    const clipPath = `clips/${clipFileName}.mp4`
+    const clipRef = ref(this.storage, clipPath)
+    uploadBytesResumable(clipRef, this.file() as File)
   }
 }
