@@ -1,9 +1,14 @@
 import { Component, signal, inject } from '@angular/core';
 import { EventBlockerDirective } from '../../shared/directives/event-blocker.directive';
-import { NgClass } from '@angular/common';
+import { NgClass, PercentPipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { InputComponent } from '../../shared/input/input.component';
-import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage';
+import {
+  Storage,
+  ref,
+  uploadBytesResumable,
+  fromTask,
+} from '@angular/fire/storage';
 import { v4 as uuid } from 'uuid';
 import { AlertComponent } from '../../shared/alert/alert.component';
 
@@ -15,6 +20,7 @@ import { AlertComponent } from '../../shared/alert/alert.component';
     ReactiveFormsModule,
     InputComponent,
     AlertComponent,
+    PercentPipe
   ],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css',
@@ -29,6 +35,7 @@ export class UploadComponent {
   alertMsg = signal('Please wait! Your clip is being uploaded.');
   alertColor = signal('blue');
   inSubmission = signal(false);
+  percantage = signal(0);
 
   form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
@@ -55,6 +62,10 @@ export class UploadComponent {
     const clipPath = `clips/${clipFileName}.mp4`;
     const clipRef = ref(this.storage, clipPath);
 
-    uploadBytesResumable(clipRef, this.file() as File);
+    const clipTask = uploadBytesResumable(clipRef, this.file() as File);
+    fromTask(clipTask).subscribe((snapshot) => {
+      const progress = snapshot.bytesTransferred / snapshot.totalBytes;
+      this.percantage.set(progress);
+    });
   }
 }

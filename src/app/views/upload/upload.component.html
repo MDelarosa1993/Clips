@@ -24,6 +24,7 @@
       @if(showAlert()) {
         <app-alert [color]="alertColor()">
           <p>{{ alertMsg() }}</p>
+          <p>{{ percantage() | percent }}</p>
         </app-alert>
       }
     <!-- Form -->
