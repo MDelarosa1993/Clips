@@ -4,11 +4,18 @@ import { NgClass } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { InputComponent } from '../../shared/input/input.component';
 import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage';
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid';
+import { AlertComponent } from '../../shared/alert/alert.component';
 
 @Component({
   selector: 'app-upload',
-  imports: [EventBlockerDirective, NgClass, ReactiveFormsModule, InputComponent],
+  imports: [
+    EventBlockerDirective,
+    NgClass,
+    ReactiveFormsModule,
+    InputComponent,
+    AlertComponent,
+  ],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css',
 })
@@ -18,6 +25,10 @@ export class UploadComponent {
   nextStep = signal(false);
   fb = inject(FormBuilder);
   private storage = inject(Storage);
+  showAlert = signal(false);
+  alertMsg = signal('Please wait! Your clip is being uploaded.');
+  alertColor = signal('blue');
+  inSubmission = signal(false);
 
   form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
@@ -35,9 +46,15 @@ export class UploadComponent {
   }
 
   uploadFile() {
-    const clipFileName = uuid()
-    const clipPath = `clips/${clipFileName}.mp4`
-    const clipRef = ref(this.storage, clipPath)
-    uploadBytesResumable(clipRef, this.file() as File)
+    this.showAlert.set(true);
+    this.alertColor.set('blue');
+    this.alertMsg.set('Please wait! Your Clip is being uploaded.');
+    this.inSubmission.set(true);
+
+    const clipFileName = uuid();
+    const clipPath = `clips/${clipFileName}.mp4`;
+    const clipRef = ref(this.storage, clipPath);
+
+    uploadBytesResumable(clipRef, this.file() as File);
   }
 }
