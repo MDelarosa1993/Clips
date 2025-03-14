@@ -60,11 +60,27 @@ export class ManageComponent implements OnInit {
 
   update($event: Clip) {
     const currentClips = this.clips();
+
     currentClips.forEach((element, index) => {
       if (element.docID === $event.docID) {
         currentClips[index].title = $event.title
       }
     });
+
     this.clips.set(currentClips);
+  }
+
+  deleteClip($event: Event, clip: Clip) {
+    $event.preventDefault();
+
+    this.clipService.deleteClip(clip);
+
+    const currentClips = this.clips()
+
+    currentClips.forEach((element, index) => {
+      if (element.docID === clip.docID) {
+        currentClips.splice(index, 1)
+      }
+    });
   }
 }
