@@ -18,6 +18,7 @@ export class ManageComponent implements OnInit {
   videoOrder = signal('1');
   clipService = inject(ClipService);
   clips = signal<Clip[]>([]);
+  activeClip = signal<Clip | null>(null);
   modal = inject(ModalService);
 
   sort($event: Event) {
@@ -53,6 +54,7 @@ export class ManageComponent implements OnInit {
 
   openModal($event: Event, clip: Clip) {
     $event.preventDefault();
+    this.activeClip.set(clip);
     this.modal.toggle('editClip');
   }
 }
