@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnDestroy } from '@angular/core';
 import { EventBlockerDirective } from '../../shared/directives/event-blocker.directive';
 import { NgClass, PercentPipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -8,7 +8,8 @@ import {
   ref,
   uploadBytesResumable,
   fromTask,
-  getDownloadURL
+  getDownloadURL,
+  UploadTask
 } from '@angular/fire/storage';
 import { v4 as uuid } from 'uuid';
 import { AlertComponent } from '../../shared/alert/alert.component';
@@ -28,7 +29,7 @@ import { ClipService } from '../../services/clip.service';
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css',
 })
-export class UploadComponent {
+export class UploadComponent implements OnDestroy {
   isDragover = signal(false);
   file = signal<File | null>(null);
   nextStep = signal(false);
@@ -42,6 +43,7 @@ export class UploadComponent {
   showPercantage = signal(false);
   #auth = inject(Auth);
   #clipService = inject(ClipService);
+  clipTask?: UploadTask;
 
   form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
@@ -69,8 +71,8 @@ export class UploadComponent {
     const clipPath = `clips/${clipFileName}.mp4`;
     const clipRef = ref(this.storage, clipPath);
 
-    const clipTask = uploadBytesResumable(clipRef, this.file() as File);
-    fromTask(clipTask).subscribe({
+    this.clipTask = uploadBytesResumable(clipRef, this.file() as File);
+    fromTask(this.clipTask).subscribe({
       next: (snapshot: any) => {
         this.form.disable();
         const progress = snapshot.bytesTransferred / snapshot.totalBytes;
@@ -101,5 +103,9 @@ export class UploadComponent {
         this.showPercantage.set(false);
       },
     });
+  }
+
+  ngOnDestroy() {
+    this.clipTask?.cancel();
   }
 }
