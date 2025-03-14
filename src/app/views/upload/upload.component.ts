@@ -16,6 +16,7 @@ import { AlertComponent } from '../../shared/alert/alert.component';
 import { Auth } from '@angular/fire/auth';
 import { ClipService } from '../../services/clip.service';
 import { Router } from '@angular/router';
+import { serverTimestamp, Timestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-upload',
@@ -97,6 +98,7 @@ export class UploadComponent implements OnDestroy {
           title: this.form.controls.title.value,
           fileName: `${clipFileName}.mp4`,
           clipURL,
+          timestamp: serverTimestamp() as Timestamp,
         };
         const clipDocRef = await this.#clipService.createClip(clip)
 
