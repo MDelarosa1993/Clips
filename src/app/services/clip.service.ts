@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore, addDoc, collection, query, where, getDocs } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, query, where, getDocs, doc, updateDoc } from '@angular/fire/firestore';
 import { Clip } from '../interfaces/clip';
 import { Auth } from '@angular/fire/auth';
 
@@ -20,5 +20,12 @@ export class ClipService {
   async getUserClips() {
     const q = query(this.#clipsCollection, where('uid', '==', this.#auth.currentUser?.uid));
     return await getDocs(q);
+  }
+
+  async upDateClip(id: string, title: string) {
+    const clipRef = doc(this.#firestore, 'clips', id)
+    return await updateDoc(clipRef, {
+      title,
+    })
   }
 }
