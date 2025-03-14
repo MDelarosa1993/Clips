@@ -1,4 +1,4 @@
-import { Component, inject, input, effect, signal } from '@angular/core';
+import { Component, inject, input, effect, signal, output } from '@angular/core';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { Clip } from '../../interfaces/clip';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -27,6 +27,7 @@ export class EditComponent {
   alertColor = signal('blue');
   alertMsg = signal('Please Wait! Updating clip');
   clipService = inject(ClipService);
+  update = output<Clip>();
 
   form = this.fb.nonNullable.group({
     id: [''],
@@ -56,6 +57,13 @@ export class EditComponent {
       this.alertMsg.set('Something went wrong! Try again later.');
       return;
     }
+    const updateClip = this.activeClip();
+
+    if(updateClip) {
+      updateClip.title = this.form.controls.title.value;
+      this.update.emit(updateClip);
+    }
+
     this.inSubmission.set(false);
     this.alertColor.set('green');
     this.alertMsg.set('Success!');
