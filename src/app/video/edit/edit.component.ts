@@ -38,7 +38,9 @@ export class EditComponent {
     effect(() => {
       this.form.controls.id.setValue(this.activeClip()?.docID ?? '');
       this.form.controls.title.setValue(this.activeClip()?.title ?? '');
-    });
+      this.inSubmission.set(false);
+      this.showAlert.set(false);
+    }, {allowSignalWrites: true});
   }
 
   async submit() {
