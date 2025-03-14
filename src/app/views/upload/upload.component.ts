@@ -15,6 +15,7 @@ import { v4 as uuid } from 'uuid';
 import { AlertComponent } from '../../shared/alert/alert.component';
 import { Auth } from '@angular/fire/auth';
 import { ClipService } from '../../services/clip.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload',
@@ -44,6 +45,7 @@ export class UploadComponent implements OnDestroy {
   #auth = inject(Auth);
   #clipService = inject(ClipService);
   clipTask?: UploadTask;
+  #router = inject(Router);
 
   form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
@@ -96,11 +98,15 @@ export class UploadComponent implements OnDestroy {
           fileName: `${clipFileName}.mp4`,
           clipURL,
         };
-        this.#clipService.createClip(clip)
+        const clipDocRef = await this.#clipService.createClip(clip)
 
         this.alertColor.set('green')
         this.alertMsg.set("Success! Your clip is now ready to share with the world.")
         this.showPercantage.set(false);
+
+        setTimeout(() => {
+          this.#router.navigate(['clip', clipDocRef.id])
+        }, 1000)
       },
     });
   }

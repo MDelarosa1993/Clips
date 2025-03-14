@@ -10,6 +10,6 @@ export class ClipService {
   constructor() { }
 
   async createClip(data: Clip) {
-    await addDoc(this.#clipsCollection, data);
+    return await addDoc(this.#clipsCollection, data);
   }
 }
