@@ -71,11 +71,13 @@ export class UploadComponent {
 
     const clipTask = uploadBytesResumable(clipRef, this.file() as File);
     fromTask(clipTask).subscribe({
-      next: (snapshot) => {
+      next: (snapshot: any) => {
+        this.form.disable();
         const progress = snapshot.bytesTransferred / snapshot.totalBytes;
         this.percantage.set(progress);
       },
       error: (error) => {
+        this.form.enable();
         this.alertColor.set('red');
         this.alertMsg.set('Upload failed! Please try again later.');
         this.inSubmission.set(false);
