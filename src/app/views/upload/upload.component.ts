@@ -49,7 +49,7 @@ export class UploadComponent implements OnDestroy {
   clipTask?: UploadTask;
   #router = inject(Router);
   ffmpegService = inject(FfmpegService);
-
+  screenshots = signal<string[]>([]);
   form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
   });
@@ -63,7 +63,8 @@ export class UploadComponent implements OnDestroy {
     this.file.set(($event as DragEvent).dataTransfer?.files.item(0) ?? null);
     if (this.file()?.type !== 'video/mp4') return;
 
-    await this.ffmpegService.getScreenshots(this.file());
+    this.screenshots.set(await this.ffmpegService.getScreenshots(this.file()));
+
     this.form.controls.title.setValue(
       this.file()?.name.replace(/\.[^/.]+$/, '') ?? ''
     );

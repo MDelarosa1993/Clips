@@ -42,7 +42,7 @@ export class FfmpegService {
     await this.ffmpeg.run(...commands);
 
     const screenshots: string[] = [];
-    screenshots.forEach((second) => {
+    seconds.forEach((second) => {
       const screenshotFile = this.ffmpeg.FS(
         'readFile',
         `output_0${second}.png`
