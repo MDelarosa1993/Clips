@@ -59,8 +59,11 @@ export class UploadComponent implements OnDestroy {
   }
 
   async storeFile($event: Event) {
+    if(this.ffmpegService.isRunning()) return;
+
     this.isDragover.set(false);
     this.file.set(($event as DragEvent).dataTransfer?.files.item(0) ?? null);
+    
     if (this.file()?.type !== 'video/mp4') return;
 
     this.screenshots.set(await this.ffmpegService.getScreenshots(this.file()));
