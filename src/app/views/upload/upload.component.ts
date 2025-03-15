@@ -17,6 +17,7 @@ import { Auth } from '@angular/fire/auth';
 import { ClipService } from '../../services/clip.service';
 import { Router } from '@angular/router';
 import { serverTimestamp, Timestamp } from '@angular/fire/firestore';
+import { FfmpegService } from '../../services/ffmpeg.service';
 
 @Component({
   selector: 'app-upload',
@@ -47,10 +48,15 @@ export class UploadComponent implements OnDestroy {
   #clipService = inject(ClipService);
   clipTask?: UploadTask;
   #router = inject(Router);
+  ffmpegService = inject(FfmpegService);
 
   form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
   });
+
+  constructor() {
+    this.ffmpegService.init();
+  }
 
   storeFile($event: Event) {
     this.isDragover.set(false);
