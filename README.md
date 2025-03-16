@@ -1,59 +1,119 @@
-# Clips
+# Clips - Video Sharing Platform
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.8.
+## Overview
 
-## Development server
+Clips is a **video-sharing platform** that allows users to **upload, manage, and share their video clips**. Built with **Angular 19+**, it features authentication, file handling, and real-time updates. Users can log in, upload videos, select thumbnails, and manage their clips easily.
 
-To start a local development server, run:
+## Features
 
-```bash
+**User Authentication** (Login/Register)  
+**Video Upload** (MP4 format, drag & drop support)  
+**Thumbnail Selection** (Generated via FFmpeg)  
+**Clip Management** (Edit/Delete clips)  
+**Real-time UI Updates**  
+**Optimized Video Streaming (Video.js)**  
+
+## Tech Stack
+
+- **Angular 19+** - Frontend Framework  
+- **FFmpeg** - Video Processing  
+- **RxJS** - Reactive Programming  
+- **Video.js** - Video Player  
+- **NgxMask** - Input Formatting  
+
+## Installation & Setup
+
+### Step 1: Clone the Repository
+
+```sh
+git clone https://github.com/MDelarosa1993/clips.git
+cd clips
+```
+
+### Step 2: Install Dependencies
+
+```sh
+npm install
+```
+
+### Step 3: Run the Development Server
+
+```sh
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Your app should now be running at **[http://localhost:4200/](http://localhost:4200/)**
 
-## Code scaffolding
+## How to Use the App
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Step 1: Register or Login
 
-```bash
-ng generate component component-name
+1. Click on **Login/Register** in the navigation bar
+2. Enter your **email** and **password**
+3. Click **Submit** to authenticate
+
+### Step 2: Upload a Video
+
+1. Navigate to the **Upload** page
+2. Drag & Drop an MP4 file or select a file manually
+3. Wait for the thumbnail to be generated
+4. Click **Publish** to upload your video
+
+### Step 3: Manage Your Clips
+
+1. Go to the **Manage** page
+2. Edit clip details (title, etc.)
+3. Delete clips if needed
+4. Sort videos by newest or oldest
+
+### Step 4: Share and View Clips
+
+1. Each video has a **unique sharable link**
+2. Click on any clip to watch it
+3. Share the link with others
+
+## File Structure
+
+```plaintext
+src/
+├── app/
+│   ├── core/          # Navigation, shared components
+│   ├── services/      # Authentication, FFmpeg services
+│   ├── shared/        # Modals, alerts, input components
+│   ├── video/         # Clip upload, listing, and management
+│   ├── views/         # Home, About, Upload, Manage pages
+│   ├── app.routes.ts  # Routing configuration
+│   ├── app.component.ts  # Main app component
+└── styles.css         # Global styles
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Troubleshooting
 
-```bash
-ng generate --help
-```
+### 1. Common Issues
 
-## Building
+- If authentication does not work, ensure the backend service is running.
+- If videos fail to upload, check file format and browser console for errors.
 
-To build the project run:
+## Contributing
 
-```bash
-ng build
-```
+Contributions are welcome! 
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature-name`)
+3. Commit changes (`git commit -m "Add new feature"`)
+4. Push to branch (`git push origin feature-name`)
+5. Open a pull request
 
-## Running unit tests
+## License
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+This project is licensed under the **MIT License**.
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## Future Improvements
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **The About Page**: Add a detailed explanation about the app.
+- **Testing Integration**: Implement unit and end-to-end testing using **Karma** and **Jasmine** to ensure app reliability.
+- **Performance Enhancements**: Optimize video streaming and lazy load components for a better user experience.
+- **Dark Mode**: Add a dark mode option for better accessibility.
+- **Mobile Optimization**: Improve UI responsiveness for a smoother mobile experience.
