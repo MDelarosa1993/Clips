@@ -111,9 +111,30 @@ This project is licensed under the **MIT License**.
 ---
 
 ## Future Improvements
-
 - **The About Page**: Add a detailed explanation about the app.
+
 - **Testing Integration**: Implement unit and end-to-end testing using **Karma** and **Jasmine** to ensure app reliability.
+
 - **Performance Enhancements**: Optimize video streaming and lazy load components for a better user experience.
+
 - **Dark Mode**: Add a dark mode option for better accessibility.
+
 - **Mobile Optimization**: Improve UI responsiveness for a smoother mobile experience.
+
+## What I Learned
+- **Component-Based Architecture**: Learned how to structure an Angular application effectively.
+
+- **State Management with RxJS**: Used observables and subjects for real-time UI updates.
+
+- **Working with FFmpeg**: Gained experience in processing video files within an Angular app.
+
+- **Routing & Lazy Loading**: Implemented dynamic route management and lazy-loaded modules for better performance.
+
+- **Form Handling**: Improved skills in handling forms, validations, and real-time error feedback.
+
+- **Signals & Directives**: Learned to use Angular signals and directives effectively.
+
+- **Input & Output**: Gained experience working with Angular's input and output decorators for data binding.
+
+- **Service-Based Architecture**: Utilized services for handling business logic and shared functionality. Also learned how to handle authentication within an Angular application.
+
