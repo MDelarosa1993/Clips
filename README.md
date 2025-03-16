@@ -103,12 +103,6 @@ Contributions are welcome!
 4. Push to branch (`git push origin feature-name`)
 5. Open a pull request
 
-## License
-
-This project is licensed under the **MIT License**.
-
----
-
 ## Future Improvements
 - **The About Page**: Add a detailed explanation about the app.
 
@@ -137,3 +131,8 @@ This project is licensed under the **MIT License**.
 
 - **Service-Based Architecture**: Utilized services for handling business logic and shared functionality. Also learned how to handle authentication within an Angular application.
 
+## License
+
+This project is licensed under the **MIT License**.
+
+---
