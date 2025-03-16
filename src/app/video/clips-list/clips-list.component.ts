@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, input } from '@angular/core';
 import { ClipService } from '../../services/clip.service';
 import { RouterLink } from '@angular/router';
 import { FbTimestampPipe } from '../../shared/pipes/fb-timestamp.pipe';
@@ -12,6 +12,8 @@ import { FbTimestampPipe } from '../../shared/pipes/fb-timestamp.pipe';
 })
 export class ClipsListComponent implements OnInit, OnDestroy {
   clipService = inject(ClipService);
+  scrollable = input(true);
+
 
   constructor() {
     this.clipService.getClips();
@@ -19,11 +21,16 @@ export class ClipsListComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(){
-    window.addEventListener('scroll', this.handleScroll);
+    if(this.scrollable()) {
+      window.addEventListener('scroll', this.handleScroll);
+    }
   }
 
   ngOnDestroy() {
-    window.removeEventListener('scroll', this.handleScroll)
+    if (this.scrollable()) {
+      window.removeEventListener('scroll', this.handleScroll);
+    }
+    this.clipService.pageClips.set([]);
   }
 
   handleScroll = () => {
