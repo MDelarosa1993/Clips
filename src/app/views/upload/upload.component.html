@@ -2,7 +2,23 @@
   <div class="rounded relative flex flex-col">
     <div class="font-bold mb-6">Upload Video</div>
 
-    @if(!nextStep()){
+    @if(!ffmpegService.isReady()) {
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="w-24 h-24 text-center flex my-12 mx-auto animate-spin"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+      />
+    </svg>
+
+    } @else { @if(!nextStep()){
     <!-- Upload Dropbox -->
     <div
       app-event-blocker
@@ -18,31 +34,45 @@
       class="w-full px-10 py-40 rounded text-center cursor-pointer border border-dashed border-gray-400 transition duration-500 hover:text-white hover:bg-indigo-400 hover:border-indigo-400 hover:border-solid text-xl"
     >
       <h5>Drop your file here (mp4 only!)</h5>
-    </div>
-    }@else {
+      @if(ffmpegService.isRunning()) {
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-24 h-24 animate-spin mx-auto mt-8"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+        />
+      </svg>
 
-      @if(showAlert()) {
-        <app-alert [color]="alertColor()">
-          <p>{{ alertMsg() }}</p>
-          @if(showPercantage()) {
-            <p>{{ percantage() | percent }}</p>
-          }
-        </app-alert>
       }
+    </div>
+    }@else { @if(showAlert()) {
+    <app-alert [color]="alertColor()">
+      <p>{{ alertMsg() }}</p>
+      @if(showPercantage()) {
+      <p>{{ percantage() | percent }}</p>
+      }
+    </app-alert>
+    }
     <!-- Form -->
     <form [formGroup]="form" (ngSubmit)="uploadFile()">
       <!-- Screenshots -->
       <h2 class="mb-4 text-xl">Select a Thumbnail</h2>
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div class="border-8 cursor-pointer border-green-400">
-          <img src="assets/img/1.jpg" />
+        @for(screenshot of screenshots(); track $index) {
+        <div class="border-8 cursor-pointer" [ngClass]="{
+          'border-green-400': screenshot === selectedScreenshots(),
+          'border-transparent': screenshot !== selectedScreenshots()
+        }">
+          <img [src]="screenshot" alt="Screenshots" (click)="selectedScreenshots.set(screenshot)"/>
         </div>
-        <div class="border-8 cursor-pointer border-transparent">
-          <img src="assets/img/2.jpg" />
-        </div>
-        <div class="border-8 cursor-pointer border-transparent">
-          <img src="assets/img/3.jpg" />
-        </div>
+        }
       </div>
 
       <!-- Title -->
@@ -68,6 +98,6 @@
         </button>
       </div>
     </form>
-    }
+    } }
   </div>
 </section>
