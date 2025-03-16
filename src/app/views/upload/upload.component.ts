@@ -137,6 +137,7 @@ export class UploadComponent implements OnDestroy {
           fileName: `${clipFileName}.mp4`,
           clipURL,
           screenshotURL,
+          screenshotFilename: `${clipFileName}.png`,
           timestamp: serverTimestamp() as Timestamp,
         };
         const clipDocRef = await this.#clipService.createClip(clip);

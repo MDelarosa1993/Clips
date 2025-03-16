@@ -54,7 +54,8 @@ export class ManageComponent implements OnInit {
           timestamp: data['timestamp'],
           fileName: data['fileName'],
           clipURL: data['clipURL'],
-          screenshotURL: data['screenshotURL']
+          screenshotURL: data['screenshotURL'],
+          screenshotFilename: data['screenshotFilename'],
         }
       ])
     })
