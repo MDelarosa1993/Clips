@@ -45,7 +45,7 @@ export class ClipService {
     await deleteObject(screenshotRef);
   }
 
-  async getclips() {
+  async getClips() {
     if (this.pendingReq) return;
     this.pendingReq = true;
 
@@ -77,7 +77,7 @@ export class ClipService {
           displayName: doc.get('displayName'),
           title: doc.get('title'),
           timestamp: doc.get('timestamp'),
-          fileName: doc.get('fileName');
+          fileName: doc.get('fileName'),
           clipURL: doc.get('clipURL'),
           screenshotURL: doc.get('screenshotURL'),
           screenshotFilename: doc.get('screenshotFilename'),

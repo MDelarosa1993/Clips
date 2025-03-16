@@ -1,12 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { ClipService } from '../../services/clip.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-clips-list',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './clips-list.component.html',
   styleUrl: './clips-list.component.css'
 })
 export class ClipsListComponent implements OnInit, OnDestroy {
+  clipService = inject(ClipService);
+
+  constructor() {
+    this.clipService.getClips();
+  }
+
 
   ngOnInit(){
     window.addEventListener('scroll', this.handleScroll);
@@ -22,7 +30,7 @@ export class ClipsListComponent implements OnInit, OnDestroy {
 
     const bottomOfWindow = Math.round(scrollTop) + innerHeight > offsetHeight - 150;
     if(bottomOfWindow) {
-      console.log('Bottom!')
+      this.clipService.getClips()
     }
   }
 
