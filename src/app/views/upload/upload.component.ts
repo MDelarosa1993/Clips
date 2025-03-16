@@ -3,6 +3,8 @@ import { EventBlockerDirective } from '../../shared/directives/event-blocker.dir
 import { NgClass, PercentPipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { InputComponent } from '../../shared/input/input.component';
+import { combineLatestWith } from 'rxjs';
+
 import {
   Storage,
   ref,
@@ -98,12 +100,15 @@ export class UploadComponent implements OnDestroy {
 
     const screenshotRef = ref(this.storage, screenshotPath);
     this.screenshotTask = uploadBytesResumable(screenshotRef, screenshotBlob);
-    
-    fromTask(this.clipTask).subscribe({
-      next: (snapshot: any) => {
+
+    fromTask(this.clipTask).pipe(
+      combineLatestWith(fromTask(this.screenshotTask)))
+      .subscribe({
+      next: ([clipSnapshot, screenshotSnapshot]: any[]) => {
         this.form.disable();
-        const progress = snapshot.bytesTransferred / snapshot.totalBytes;
-        this.percantage.set(progress);
+        const bytesUploaded = clipSnapshot.bytesTransferred + screenshotSnapshot.bytesTransferred;
+        const totalBytes = clipSnapshot.totalBytes + screenshotSnapshot.totalBytes;
+        this.percantage.set(bytesUploaded / totalBytes);
       },
       error: (error) => {
         this.form.enable();
