@@ -1,6 +1,8 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, viewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { ClipsListComponent } from '../../video/clips-list/clips-list.component';
+
+
 
 @Component({
   selector: 'app-clip',
@@ -11,6 +13,7 @@ import { ClipsListComponent } from '../../video/clips-list/clips-list.component'
 export class ClipComponent implements OnInit {
   route = inject(ActivatedRoute);
   id = signal('');
+  target = viewChild.required<ElementRef<HTMLVideoElement>>('videoPlayer');
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
