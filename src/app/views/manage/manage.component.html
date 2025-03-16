@@ -29,26 +29,27 @@
     <div class="mt-6 rounded-tl-2xl rounded-br-2xl shadow-xl bg-secondary flex flex-col justify-start">
       <!-- Image -->
       <a href="#">
-        <img class="card-img-top rounded-tl-2xl w-full" src="assets/img/1.jpg" alt="Video thumbnail" />
+        <img class="card-img-top rounded-tl-2xl w-full" [src]="clip.screenshotURL" crossorigin alt="Video thumbnail" />
       </a>
 
       <!-- Body -->
       <div class="p-6 text-2xl">
         <!-- Link -->
-        <a href="#" class="font-bold mb-2"> {{ clip.title }} </a>
-        <a href="#" class="bg-gray-400 text-white px-2 py-1 ml-2 text-sm rounded">
+        <a class="font-bold mb-2"> {{ clip.title }} </a>
+        <button class="bg-gray-400 text-white px-3 py-1 text-sm rounded-md shadow-sm 
+                 hover:bg-gray-500 transition duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
           Copy Link
-        </a>
+      </button>
       </div>
 
       <!-- Actions -->
       <div class="flex text-center text-2xl bg-gray-800 p-2 mt-auto">
-        <a (click)="openModal($event, clip)" href="#" class="flex-1 p-2 border-right border-r-2 border-gray-700 transition hover:text-indigo-400">
-          <span class="material-icons text-base">build</span>
-        </a>
-        <a (click)="deleteClip($event, clip)" href="#" class="flex-1 p-2 rounded-br-2xl transition hover:text-indigo-400">
-          <span class="material-icons text-base">delete</span>
-        </a>
+        <button (click)="openModal($event, clip)" class="flex-1 p-2 border-r-2 border-gray-700 transition hover:text-indigo-400">
+          <span class="material-icons text-xl">build</span>
+        </button>
+        <button (click)="deleteClip($event, clip)" class="flex-1 p-2 rounded-br-2xl transition hover:text-indigo-400">
+          <span class="material-icons text-xl">delete</span>
+        </button>
       </div>
     </div>
     } 
