@@ -89,9 +89,8 @@ src/
 
 ## Troubleshooting
 
-### 1. Common Issues
+### Common Issues
 
-- If authentication does not work, ensure the backend service is running.
 - If videos fail to upload, check file format and browser console for errors.
 
 ## Contributing
