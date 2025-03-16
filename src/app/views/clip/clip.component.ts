@@ -1,7 +1,7 @@
 import { Component, inject, signal, OnInit, viewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { ClipsListComponent } from '../../video/clips-list/clips-list.component';
-
+import videojs from 'video.js';
 
 
 @Component({
@@ -19,5 +19,6 @@ export class ClipComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.id.set(params['id'])
     })
+    const player = videojs(this.target().nativeElement);
   }
 }
