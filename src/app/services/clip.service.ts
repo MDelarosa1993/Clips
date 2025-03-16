@@ -1,8 +1,10 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Firestore, addDoc, collection, query, where, getDocs, doc, updateDoc, deleteDoc, orderBy, limit, startAfter, QueryConstraint, QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, query, where, getDocs, doc, updateDoc, deleteDoc, orderBy, limit, startAfter, QueryConstraint, QueryDocumentSnapshot, getDoc } from '@angular/fire/firestore';
 import { Clip } from '../interfaces/clip';
 import { Auth } from '@angular/fire/auth';
 import { Storage, ref, deleteObject } from '@angular/fire/storage';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +17,7 @@ export class ClipService {
   pageClips = signal<Clip[]>([]);
   lastDoc: QueryDocumentSnapshot | null = null;
   pendingReq = false;
+  router = inject(Router);
 
 
   constructor() { }
@@ -84,5 +87,15 @@ export class ClipService {
         },
       ]);
     })
+  }
+
+  async resolve(id: string) {
+    const snapshot = await getDoc(doc(this.#firestore, 'clips', id));
+    if(!snapshot.exists()) {
+      this.router.navigate(['/']);
+      return null
+    }
+
+    return snapshot.data() as Clip;
   }
 }
