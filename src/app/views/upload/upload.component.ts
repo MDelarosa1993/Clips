@@ -51,6 +51,8 @@ export class UploadComponent implements OnDestroy {
   ffmpegService = inject(FfmpegService);
   screenshots = signal<string[]>([]);
   selectedScreenshots = signal('');
+  screenshotTask?: UploadTask;
+
   form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
   });
@@ -78,7 +80,7 @@ export class UploadComponent implements OnDestroy {
     console.log(this.file());
   }
 
-  uploadFile() {
+  async uploadFile() {
     this.showAlert.set(true);
     this.alertColor.set('blue');
     this.alertMsg.set('Please wait! Your Clip is being uploaded.');
@@ -87,9 +89,16 @@ export class UploadComponent implements OnDestroy {
 
     const clipFileName = uuid();
     const clipPath = `clips/${clipFileName}.mp4`;
+
+    const screenshotBlob = await this.ffmpegService.blobFromURL(this.selectedScreenshots())
+    const screenshotPath = `screenshots/${clipFileName}.png`
     const clipRef = ref(this.storage, clipPath);
 
     this.clipTask = uploadBytesResumable(clipRef, this.file() as File);
+
+    const screenshotRef = ref(this.storage, screenshotPath);
+    this.screenshotTask = uploadBytesResumable(screenshotRef, screenshotBlob);
+    
     fromTask(this.clipTask).subscribe({
       next: (snapshot: any) => {
         this.form.disable();

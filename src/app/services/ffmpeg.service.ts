@@ -21,7 +21,7 @@ export class FfmpegService {
     if (!file) {
       return [];
     }
-    
+
     this.isRunning.set(true);
 
     const data = await fetchFile(file);
@@ -59,5 +59,12 @@ export class FfmpegService {
     });
     this.isRunning.set(false);
     return screenshots;
+  }
+
+  async blobFromURL(url: string) {
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    return blob;
   }
 }
