@@ -92,4 +92,12 @@ export class ManageComponent implements OnInit {
       }
     });
   }
+
+  async copyToClipboard($event: MouseEvent, id: string | undefined) {
+    $event.preventDefault();
+    const url = `${location.origin}/clip/${id}`;
+    await navigator.clipboard.writeText(url);
+
+    alert("Link Copied!")
+  }
 }
