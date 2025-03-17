@@ -1,5 +1,10 @@
 import { TestBed } from "@angular/core/testing";
+import { AboutComponent } from "./about.component";
 
 describe('About Component', () => {
-  const testBed = new TestBed;
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AboutComponent],
+    }).compileComponents();
+  });
 })
