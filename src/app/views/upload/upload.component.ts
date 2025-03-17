@@ -20,7 +20,6 @@ import { ClipService } from '../../services/clip.service';
 import { Router } from '@angular/router';
 import { serverTimestamp, Timestamp } from '@angular/fire/firestore';
 import { FfmpegService } from '../../services/ffmpeg.service';
-import { subscribe } from 'diagnostics_channel';
 
 @Component({
   selector: 'app-upload',
