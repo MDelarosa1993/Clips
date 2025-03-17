@@ -1,5 +1,7 @@
 # Clips - Video Sharing Platform
 
+# Deployed Link - https://clips-5w5pyt6mt-mdelarosa1993s-projects.vercel.app/
+
 ## Overview
 
 Clips is a **video-sharing platform** that allows users to **upload, manage, and share their video clips**. Built with **Angular 19+**, it features authentication, file handling, and real-time updates. Users can log in, upload videos, select thumbnails, and manage their clips easily.
