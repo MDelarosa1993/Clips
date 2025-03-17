@@ -1,6 +1,6 @@
 # Clips - Video Sharing Platform
 
-# Deployed Link - https://clips-5w5pyt6mt-mdelarosa1993s-projects.vercel.app/
+# Deployed Link - https://clips-git-main-mdelarosa1993s-projects.vercel.app
 
 ## Overview
 
