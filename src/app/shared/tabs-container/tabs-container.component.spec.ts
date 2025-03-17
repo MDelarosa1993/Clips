@@ -36,6 +36,6 @@ describe('TabsContainerComponent', () => {
 
   it('should have two tabs', () => {
     const tabs = fixture.debugElement.queryAll(By.css('nav > a'));
-    expect(tabs.length).toBe(2)
+    expect(tabs.length).withContext('Tabs did not render in the dummy component').toBe(2)
   })
 });
