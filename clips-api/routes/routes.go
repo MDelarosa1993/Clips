@@ -2,6 +2,7 @@ package routes
 
 import (
 	"clips-api/handlers"
+	"clips-api/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,8 +11,11 @@ func RegisterRoutes(r *gin.Engine) {
 	// Health Check Route
 	r.GET("/health", handlers.HealthHandler)
 
-	// Clips Routes
-	clips := r.Group("/clips")
+	// Authentication Routes
+	r.POST("/login", handlers.LoginHandler)
+
+	// Protected clips Routes
+	clips := r.Group("/clips", middleware.AuthMiddleware())
 	{
 		clips.GET("/recent", handlers.GetRecentClips) // Get recent clips
 		clips.GET("/user/:userID", handlers.GetAllClips)   // Get all clips for a user
