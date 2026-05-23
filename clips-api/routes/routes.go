@@ -12,6 +12,7 @@ func RegisterRoutes(r *gin.Engine) {
 	r.GET("/health", handlers.HealthHandler)
 
 	// Authentication Routes
+	r.POST("/register", handlers.RegisterHandler)
 	r.POST("/login", handlers.LoginHandler)
 
 	// Protected clips Routes

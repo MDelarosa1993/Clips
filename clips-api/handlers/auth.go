@@ -6,11 +6,42 @@ import (
 	"os"
 	"time"
 
+	"clips-api/repository"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
+var userRepo = repository.UserRepository{}
+
+// RegisterHandler registers a new user
+func RegisterHandler(c *gin.Context) {
+	var user db.User
+
+	// Bind JSON input
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		return
+	}
+
+	// Hash the password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
+		return
+	}
+	user.Password = string(hashedPassword)
+
+	// Save the user to the database
+	if err := userRepo.CreateUser(&user); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register user"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully"})
+}
 
 // LoginHandler authenticates the user and generates a JWT token
 func LoginHandler(c *gin.Context) {
@@ -26,14 +57,14 @@ func LoginHandler(c *gin.Context) {
 	}
 
 	// Check if the user exists in the database
-	var user db.User
-	if err := db.DB.Where("email = ?", credentials.Email).First(&user).Error; err != nil {
+	user, err := userRepo.GetUserByEmail(credentials.Email)
+	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
 
-	// Verify the password (you should hash passwords in production)
-	if user.Password != credentials.Password {
+	// Verify the password
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(credentials.Password)); err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
